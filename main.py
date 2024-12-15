@@ -144,9 +144,9 @@ def plot_results(results, k=10):
                        width, label=algorithm)
         multiplier += 1
     
-    plt.xlabel('评估指标')
-    plt.ylabel('分数')
-    plt.title(f'推荐算法性能对比 (k={k})')
+    plt.xlabel('Evaluation Metrics')
+    plt.ylabel('Score')
+    plt.title(f'Recommender Algorithm Performance Comparison (k={k})')
     plt.xticks(x + width * (len(algorithms) - 1) / 2, metrics)
     plt.legend(loc='upper left', bbox_to_anchor=(1, 1))
     plt.tight_layout()
