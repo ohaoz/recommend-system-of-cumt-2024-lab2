@@ -44,13 +44,39 @@ recommend/
 │   ├── user_knn_example.py
 │   ├── item_knn_example.py
 │   ├── svd_example.py
-│   └─�� slope_one_example.py
+│   └── slope_one_example.py
 └── utils/                   # 工具类
     ├── data_loader.py      # 数据加载
     └── metrics.py          # 评估指标
 ```
 
 ## 算法说明
+
+### 符号说明
+
+| 符号 | 含义 | 使用场景 |
+|:---:|:---|:---|
+| U, I | 用户-标签矩阵，物品-标签矩阵 | Tag-based, SVD |
+| uᵢⱼ, iᵢⱼ | 矩阵中的元素值 | Tag-based, SVD |
+| sim(a,b) | a与b之间的相似度 | 所有基于相似度的算法 |
+| cosine(x,y) | x与y的余弦相似度 | 相似度计算 |
+| X | 三阶张量 | Tensor-based |
+| ℝᵐˣⁿˣᵏ | m×n×k维实数空间 | Tensor-based |
+| Σᵣ | 对下标r求和 | Tensor-based, SVD |
+| θ, φ | 主题分布，标签分布 | LDA-based |
+| α, β | Dirichlet分布参数 | LDA-based |
+| G(V,E) | 图的顶点集和边集 | Graph-based |
+| eᵤ, eᵢ | 节点的嵌入向量 | Graph-based |
+| σ(x) | Sigmoid激活函数 | Graph-based |
+| Rᵤ, Rᵥ | 用户的评分向量 | User-KNN |
+| Rᵢ, Rⱼ | 物品的评分向量 | Item-KNN |
+| Nₖ(x) | x的k个最近邻集合 | KNN-based |
+| r̂ᵤᵢ | 预测的评分值 | 所有算法 |
+| dev(i,j) | 物品i和j之间的评分偏差 | Slope One |
+| S(i,j) | 同时评价过物品i和j的用户集 | Slope One |
+| R(u) | 用户u评价过的物品集 | 多个算法 |
+| μ | 全局平均评分 | SVD |
+| bᵤ, bᵢ | 用户和物品的偏置项 | SVD |
 
 1. **基于标签的推荐 (Tag-based)**
    - 利用用户和物品的标签信息
@@ -75,7 +101,7 @@ recommend/
    - 使用CP分解捕获多维特征
    - 可以同时建模多种关系
    - **定义**：将用户-物品-标签的三维关系建模为张量，通过张量分解学习潜在特征
-   - **数学原���**：
+   - **数学原理**：
      - 构建三阶张量：X ∈ ℝᵐˣⁿˣᵏ，其中m、n、k分别是用户、物品、标签数量
      - CP分解：X ≈ Σᵣ aᵣ ∘ bᵣ ∘ cᵣ
        - aᵣ ∈ ℝᵐ：用户潜在特征向量
@@ -140,7 +166,7 @@ recommend/
    - 基于用户相似度进行协同过滤
    - 计算简单，易于实现
    - 推荐结果具有很好的解释性   
-   - **定义**：基于用户间的相似度进行协同过滤，利用相似用户���评分预测目标用户的偏好
+   - **定义**：基于用户间的相似度进行协同过滤，利用相似用户评分预测目标用户的偏好
    - **数学原理**：
      - 用户相似度：sim(u,v) = cosine(Rᵤ, Rᵥ)
        - Rᵤ、Rᵥ为用户的评分向量
@@ -205,7 +231,7 @@ recommend/
      - 物品间偏差：dev(i,j) = Σᵤ∈S(i,j) (rᵤᵢ - rᵤⱼ) / |S(i,j)|
        - S(i,j)为同时评价过物品i和j的用户集
      - 预测评分：r̂ᵤᵢ = Σⱼ∈R(u) (rᵤⱼ + dev(i,j)) / |R(u)|
-       - R(u)为��户u评价过的物品集
+       - R(u)为用户u评价过的物品集
    - **优点**：
      - 算法简单高效
      - 考虑评分偏差
